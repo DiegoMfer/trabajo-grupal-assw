@@ -1,11 +1,11 @@
 minikube start
 
+# lo de docker no es necesario hacerlo porque ya lo ise yo banda, su amigo lokendero
 docker build -t frontend:latest ./frontend
 docker build -t backend:latest ./backend
 
 docker tag frontend:latest monsterultrafiesta/frontend:latest
 docker tag backend:latest monsterultrafiesta/backend:latest
-
 
 docker push monsterultrafiesta/frontend:latest
 docker push monsterultrafiesta/backend:latest
