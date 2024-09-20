@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: backend:latest
+        image: monsterultrafiesta/backend:latest  # Imagen de Docker Hub
         ports:
         - containerPort: 5000
 ---

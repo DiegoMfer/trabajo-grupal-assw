@@ -1,6 +1,21 @@
+minikube start
+
 docker build -t frontend:latest ./frontend
 docker build -t backend:latest ./backend
 
-kubectl apply -f frontend-deployment.yaml
-kubectl apply -f backend-deployment.yaml
+docker tag frontend:latest monsterultrafiesta/frontend:latest
+docker tag backend:latest monsterultrafiesta/backend:latest
+
+
+docker push monsterultrafiesta/frontend:latest
+docker push monsterultrafiesta/backend:latest
+
+
 kubectl apply -f db-deployment.yaml
+
+kubectl apply -f backend-deployment.yaml
+
+kubectl apply -f frontend-deployment.yaml
+
+minikube service frontend-service
+
