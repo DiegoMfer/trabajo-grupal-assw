@@ -6,7 +6,7 @@ Este proyecto es una aplicación web simple que se despliega en Kubernetes. La a
 ## Tecnologías Usadas
 
 - **Front-end**: HTML servido a través de Nginx
-- **Back-end**: Flask (Python) con conexión a PostgreSQL
+- **Back-end**: Python
 - **Base de datos**: PostgreSQL
 - **Orquestación**: Kubernetes
 

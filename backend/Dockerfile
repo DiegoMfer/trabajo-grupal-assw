@@ -12,14 +12,13 @@ RUN apk update && apk add --no-cache \
 WORKDIR /app
 
 # Copiar el archivo de código
-COPY app.py app.py
+COPY backend.py backend.py
 
-# Instalar dependencias directamente
-RUN pip install --upgrade pip && \
-    pip install Flask==2.0.2 psycopg2-binary==2.9.1
+# Instalar solo psycopg2
+RUN pip install --upgrade pip && pip install psycopg2-binary==2.9.1
 
-# Exponer el puerto
+# Exponer el puerto 5000
 EXPOSE 5000
 
 # Ejecutar la aplicación
-CMD ["python", "app.py"]
+CMD ["python", "backend.py"]
