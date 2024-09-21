@@ -17,5 +17,12 @@ kubectl apply -f backend-deployment.yaml
 
 kubectl apply -f frontend-deployment.yaml
 
-minikube service frontend-service
+#Esto se ejecuta para exponer las ip del fron y del back, entre estas dos podríamos poner un firewall
+#expone el servicio backend-service con su ip
+minikube service backend-service &
+#expone lo mismo pero con el front
+minikube service frontend-service &
+
+
+
 
