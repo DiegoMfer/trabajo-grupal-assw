@@ -11,11 +11,6 @@
     <p id="backendResponse">Waiting for response from backend...</p>
 
     <script>
-        fetch('http://127.0.0.1:35237/')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('backendResponse').innerText = data.message;
-            })<script>
     fetch('http://127.0.0.1:35237/') //aquí podría ir el firewall
         .then(response => {
             if (!response.ok) {
