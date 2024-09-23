@@ -1,3 +1,7 @@
+kubectl delete deployment backend
+kubectl delete deployment frontend
+kubectl delete deployment db
+
 
 kubectl apply -f db-deployment.yaml
 

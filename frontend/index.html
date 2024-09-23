@@ -10,8 +10,22 @@
     <h1>Hello from Front-end!</h1>
     <p id="backendResponse">Waiting for response from backend...</p>
 
+    <!-- Tabla donde se mostrará el listado de alumnos -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Nota</th>
+            </tr>
+        </thead>
+        <tbody id="alumnosTableBody">
+            <!-- Aquí se añadirá dinámicamente el listado de alumnos -->
+        </tbody>
+    </table>
+
     <script>
-    fetch('http://127.0.0.1:35237/') //aquí podría ir el firewall
+    // Fetch para obtener el mensaje inicial del backend
+    fetch('http://127.0.0.1:35237/')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -24,8 +38,40 @@
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
         });
-</script>
-;
+
+    // Fetch para obtener el listado de alumnos y sus notas
+    fetch('http://127.0.0.1:35237/alumnos') // Asegúrate de que la ruta sea correcta
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const alumnosTableBody = document.getElementById('alumnosTableBody');
+            
+            // Limpiar el contenido anterior (si lo hubiera)
+            alumnosTableBody.innerHTML = '';
+
+            // Agregar cada alumno como una fila en la tabla
+            data.alumnos.forEach(alumno => {
+                const row = document.createElement('tr');
+                const nombreCell = document.createElement('td');
+                const notaCell = document.createElement('td');
+
+                nombreCell.textContent = alumno.nombre;
+                notaCell.textContent = alumno.nota;
+
+                row.appendChild(nombreCell);
+                row.appendChild(notaCell);
+                alumnosTableBody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+
+    console.log('Fetching data...');
     </script>
 </body>
 </html>
