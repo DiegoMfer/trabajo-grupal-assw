@@ -16,7 +16,7 @@ spec:
       - name: frontend
         image: monsterultrafiesta/frontend:latest  # Imagen de Docker Hub
         ports:
-        - containerPort: 80
+        - containerPort: 80  # El frontend expone el puerto 80 para HTTP
 ---
 apiVersion: v1
 kind: Service
@@ -27,6 +27,6 @@ spec:
     app: frontend
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 80
- 
+      port: 80  # El puerto 80 es el estándar para HTTP
+      targetPort: 80  # Redirige al puerto 80 del contenedor frontend
+  type: ClusterIP  # Solo accesible dentro del clúster
