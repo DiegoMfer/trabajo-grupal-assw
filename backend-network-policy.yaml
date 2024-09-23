@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: backend-network-policy
@@ -6,14 +6,14 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app: backend
+      app: backend  # La política aplica a los pods etiquetados como "backend"
   policyTypes:
-  - Ingress
+  - Ingress  # Esta política regula solo el tráfico de entrada
   ingress:
   - from:
     - podSelector:
         matchLabels:
-          app: frontend # Solo el frontend puede acceder al backend
+          app: frontend  # Solo el frontend puede acceder al backend
     ports:
     - protocol: TCP
-      port: 5000
+      port: 5000  # Permite tráfico al puerto 5000 del backend
