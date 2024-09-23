@@ -53,9 +53,22 @@ def create_table_and_insert_data():
 
 # Clase que maneja las peticiones HTTP
 class MyRequestHandler(BaseHTTPRequestHandler):
+
+    # Método para agregar cabeceras CORS a todas las respuestas
+    def _set_cors_headers(self):
+        self.send_header('Access-Control-Allow-Origin', '*')  # Permitir todas las solicitudes de origen
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')  # Métodos permitidos
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')  # Cabeceras permitidas
+
+    # Manejar solicitudes OPTIONS (preflight para CORS)
+    def do_OPTIONS(self):
+        self.send_response(204)  # Sin contenido
+        self._set_cors_headers()
+        self.end_headers()
+
     def do_GET(self):
-        if self.path == '/':
-            try:
+        try:
+            if self.path == '/':
                 conn = get_db_connection()
                 cur = conn.cursor()
                 cur.execute('SELECT 1')
@@ -65,19 +78,14 @@ class MyRequestHandler(BaseHTTPRequestHandler):
                 response = {
                     "message": f"Hello from Back-end! DB response: {result[0]}"
                 }
+
                 self.send_response(200)
+                self._set_cors_headers()  # Add CORS headers
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
                 self.wfile.write(json.dumps(response).encode())
 
-            except Exception as e:
-                self.send_response(500)
-                self.send_header('Content-type', 'text/plain')
-                self.end_headers()
-                self.wfile.write(f"Error: {e}".encode())
-
-        elif self.path == '/alumnos':
-            try:
+            elif self.path == '/alumnos':
                 conn = get_db_connection()
                 cur = conn.cursor()
                 cur.execute('SELECT nombre, nota FROM alumnos_notas')
@@ -91,15 +99,17 @@ class MyRequestHandler(BaseHTTPRequestHandler):
                     response = {"alumnos": alumnos_list}
 
                 self.send_response(200)
+                self._set_cors_headers()  # Add CORS headers
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
                 self.wfile.write(json.dumps(response).encode())
 
-            except Exception as e:
-                self.send_response(500)
-                self.send_header('Content-type', 'text/plain')
-                self.end_headers()
-                self.wfile.write(f"Error: {e}".encode())
+        except Exception as e:
+            self.send_response(500)
+            self._set_cors_headers()  # Add CORS headers
+            self.send_header('Content-type', 'text/plain')
+            self.end_headers()
+            self.wfile.write(f"Error: {e}".encode())
 
 # Ejecutar el servidor HTTP
 def run(server_class=HTTPServer, handler_class=MyRequestHandler, port=5000):
