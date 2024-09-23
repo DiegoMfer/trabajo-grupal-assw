@@ -14,9 +14,9 @@ spec:
     spec:
       containers:
       - name: backend
-        image: monsterultrafiesta/backend:latest  # Imagen de Docker Hub
+        image: monsterultrafiesta/backend:latest  # Docker Hub image
         ports:
-        - containerPort: 5000  # El backend expone el puerto 5000
+        - containerPort: 5000  # Backend exposes port 5000
 ---
 apiVersion: v1
 kind: Service
@@ -25,8 +25,9 @@ metadata:
 spec:
   selector:
     app: backend
+  type: LoadBalancer  # Expose externally
+  loadBalancerIP: 192.168.99.100  # Set a static IP (example IP)
   ports:
     - protocol: TCP
-      port: 5000  # El puerto del servicio dentro del clúster
-      targetPort: 5000  # Redirige al puerto 5000 del contenedor backend
-  type: ClusterIP  # Solo accesible dentro del clúster
+      port: 5000  # External port
+      targetPort: 5000  # Redirects to backend container's port

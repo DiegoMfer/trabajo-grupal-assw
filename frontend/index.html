@@ -25,7 +25,7 @@
 
     <script>
     // Fetch para obtener el mensaje inicial del backend
-    fetch('http://127.0.0.1:42231')
+    fetch('http://10.97.139.192:5000')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -40,7 +40,7 @@
         });
 
     // Fetch para obtener el listado de alumnos y sus notas
-    fetch('http://127.0.0.1:35237/alumnos') // Asegúrate de que la ruta sea correcta
+    fetch('http://10.97.139.192:5000/alumnos') // Asegúrate de que la ruta sea correcta
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
