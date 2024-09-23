@@ -13,7 +13,7 @@ Este proyecto es una aplicación web simple que se despliega en Kubernetes. La a
 ## Requisitos Previos
 
 - Docker
-- Kubernetes (minikube, GKE, EKS, etc.)
+- Kubernetes (minikube, etc.)
 - kubectl
 
 ## Instalación y Despliegue
