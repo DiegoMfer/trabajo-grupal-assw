@@ -22,7 +22,7 @@ def create_table_and_insert_data():
         cur.execute('''
             CREATE TABLE IF NOT EXISTS alumnos_notas (
                 id SERIAL PRIMARY KEY,
-                nombre VARCHAR(100) NOT NULL UNIQUE,  -- Agregar UNIQUE para evitar duplicados
+                nombre VARCHAR(100) NOT NULL UNIQUE,
                 nota INT NOT NULL
             );
         ''')
@@ -36,7 +36,7 @@ def create_table_and_insert_data():
             ('Pedro', 78),
             ('Ana', 90),
             ('Luis', 88)
-            ON CONFLICT (nombre) DO NOTHING;  -- Evitar duplicados basados en nombre
+            ON CONFLICT (nombre) DO NOTHING;
         ''')
 
         # Confirmar la transacción
@@ -47,7 +47,6 @@ def create_table_and_insert_data():
         print(f"Error al crear la tabla o insertar datos: {e}")
 
     finally:
-        # Cerrar la conexión a la base de datos
         if conn:
             cur.close()
             conn.close()
@@ -59,26 +58,21 @@ class MyRequestHandler(BaseHTTPRequestHandler):
             try:
                 conn = get_db_connection()
                 cur = conn.cursor()
-
-                # Verificar si la base de datos está funcionando
                 cur.execute('SELECT 1')
                 result = cur.fetchone()
                 conn.close()
 
-                # Crear la respuesta en formato JSON
                 response = {
-                    "message": f"Hello from Back-end! DB response aa: {result[0]}"
+                    "message": f"Hello from Back-end! DB response: {result[0]}"
                 }
-
-                # Enviar la respuesta con el código 200 OK
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
                 self.wfile.write(json.dumps(response).encode())
 
             except Exception as e:
-                # En caso de error, enviar un mensaje de error
                 self.send_response(500)
+                self.send_header('Content-type', 'text/plain')
                 self.end_headers()
                 self.wfile.write(f"Error: {e}".encode())
 
@@ -86,38 +80,28 @@ class MyRequestHandler(BaseHTTPRequestHandler):
             try:
                 conn = get_db_connection()
                 cur = conn.cursor()
-
-                # Obtener la lista de alumnos y sus notas
                 cur.execute('SELECT nombre, nota FROM alumnos_notas')
                 alumnos = cur.fetchall()
                 conn.close()
 
                 if not alumnos:
-                    # Si no hay alumnos, devolver un mensaje adecuado
                     response = {"message": "No se encontraron alumnos en la base de datos."}
                 else:
-                    # Crear una lista de diccionarios con los alumnos y sus notas
                     alumnos_list = [{"nombre": alumno[0], "nota": alumno[1]} for alumno in alumnos]
+                    response = {"alumnos": alumnos_list}
 
-                    # Crear la respuesta en formato JSON
-                    response = {
-                        "alumnos": alumnos_list
-                    }
-
-                # Enviar la respuesta con el código 200 OK
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
                 self.wfile.write(json.dumps(response).encode())
 
             except Exception as e:
-                # Capturar cualquier error en la consulta o en la conexión
-                print(f"Error al obtener la lista de alumnos: {e}")
                 self.send_response(500)
+                self.send_header('Content-type', 'text/plain')
                 self.end_headers()
                 self.wfile.write(f"Error: {e}".encode())
 
-# Configurar y ejecutar el servidor HTTP
+# Ejecutar el servidor HTTP
 def run(server_class=HTTPServer, handler_class=MyRequestHandler, port=5000):
     server_address = ('', port)
     httpd = server_class(server_address, handler_class)

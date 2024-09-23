@@ -11,7 +11,7 @@ RUN apk update && apk add --no-cache \
 # Establecer el directorio de trabajo
 WORKDIR /app
 
-# Copiar el archivo de código
+# Copiar el archivo de código y el archivo HTML
 COPY backend.py backend.py
 
 # Instalar solo psycopg2
