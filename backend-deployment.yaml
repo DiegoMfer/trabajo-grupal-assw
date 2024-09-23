@@ -16,7 +16,7 @@ spec:
       - name: backend
         image: monsterultrafiesta/backend:latest  # Imagen de Docker Hub
         ports:
-        - containerPort: 5000
+        - containerPort: 5000  # El backend expone el puerto 5000
 ---
 apiVersion: v1
 kind: Service
@@ -27,8 +27,6 @@ spec:
     app: backend
   ports:
     - protocol: TCP
-      port: 5000
-      targetPort: 5000
-  type: NodePort
-
-
+      port: 5000  # El puerto del servicio dentro del clúster
+      targetPort: 5000  # Redirige al puerto 5000 del contenedor backend
+  type: ClusterIP  # Solo accesible dentro del clúster
